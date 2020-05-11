@@ -1,13 +1,11 @@
 import React from 'react';
+import { connect } from "react-redux";
+import { makeApiCall } from "./actions";
+
 
 class Headlines extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      error: null,
-      isLoaded: false,
-      headlines: []
-    }
   }
 
   // makeApiCall = () => {
@@ -29,14 +27,16 @@ class Headlines extends React.Component {
   // }
 
   componentDidMount() {
-    this.makeApiCall()
+    // this.makeApiCall()
+    const { dispatch } = this.props;
+    dispatch(makeApiCall());
   }
 
   render() {
-    const { error, isLoaded, headlines } = this.state;
+    const { error, isLoading, headlines } = this.props;
     if (error) {
       return <React.Fragment>Error: {error.message}</React.Fragment>
-    } else if (!isLoaded) {
+    } else if (!isLoading) {
       return <React.Fragment>Loading. . .</React.Fragment>;
     } else {
       return (
@@ -44,8 +44,8 @@ class Headlines extends React.Component {
           <h1>Headlines</h1>
           <ul>
             {headlines.map((headline, index) =>
-              <li> key={index}>
-              <h3>{headline.title}</h3>
+              <li key={index}>
+                <h3>{headline.title}</h3>
                 <p>{headline.abstract}</p>
               </li>
             )}
@@ -55,5 +55,12 @@ class Headlines extends React.Component {
     }
   }
 }
+const mapStateToProps = state => {
+  return {
+    headlines: state.healines,
+    isLoading: state.isLoading,
+    error: state.error
+  }
+}
 
-export default Headlines;
+export default connect(mapStateToProps)(Headlines);
