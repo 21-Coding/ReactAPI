@@ -11,7 +11,7 @@ class Headlines extends React.Component {
   }
 
   makeApiCall = () => {
-    fetch(`https://api/nytimes.com/svc/topstories/v2/home/json?api-key=${V5ZQKmdCZCsKAfwT3vHppC6lspfZPH4e}`)
+    fetch(`https://api.nytimes.com/svc/topstories/v2/home.json?api-key=${process.env.REACT_APP_API_KEY}`)
       .then(response => response.json())
       .then(
         (jsonifiedResponse) => {
@@ -55,3 +55,5 @@ class Headlines extends React.Component {
     }
   }
 }
+
+export default Headlines;
